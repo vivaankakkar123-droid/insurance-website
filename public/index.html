@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insurance Buzzz - Find Your Best Insurance Policy</title>
+    <title>InsureCompare - Find Your Best Insurance Policy</title>
     <style>
         * {
             margin: 0;
@@ -254,6 +254,10 @@
             margin-top: 60px;
         }
 
+        footer a {
+            color: white;
+        }
+
         .loading {
             text-align: center;
             padding: 40px;
@@ -308,10 +312,11 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <div class="logo">🛡️ Insurance buzzz</div>
+                <div class="logo">🛡️ Insurance Buzzz</div>
                 <nav>
                     <a href="#policies">Browse Policies</a>
                     <a href="#contact">Contact Us</a>
+                    <a href="/admin">Admin</a>
                 </nav>
             </div>
         </div>
@@ -325,10 +330,10 @@
                 <select id="typeFilter">
                     <option value="">All Insurance Types</option>
                     <option value="Health">Health Insurance</option>
-                    <option value="Life">Life Insurance</option>
-                    <option value="Car">Car Insurance</option>
+                    <option value="Motor">Motor Insurance</option>
                     <option value="Home">Home Insurance</option>
                     <option value="Travel">Travel Insurance</option>
+                    <option value="Commercial">Commercial Insurance</option>
                 </select>
                 <button onclick="filterPolicies()">Search Policies</button>
             </div>
@@ -375,10 +380,10 @@
                     <select id="policyType" name="policyType" required>
                         <option value="">Select a type</option>
                         <option value="Health Insurance">Health Insurance</option>
-                        <option value="Life Insurance">Life Insurance</option>
-                        <option value="Car Insurance">Car Insurance</option>
+                        <option value="Motor Insurance">Motor Insurance</option>
                         <option value="Home Insurance">Home Insurance</option>
                         <option value="Travel Insurance">Travel Insurance</option>
+                        <option value="Commercial Insurance">Commercial Insurance</option>
                     </select>
                 </div>
 
@@ -394,8 +399,9 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 InsureCompare. All rights reserved.</p>
-            <p>Your trusted insurance comparison platform</p>
+            <p>&copy; 2024 Insurance Buzzz. All rights reserved.</p>
+            <p>Contact: 9953558483 | Email: insurancebuzzz@gmail.com</p>
+            <p><a href="/admin">Admin Login</a></p>
         </div>
     </footer>
 
