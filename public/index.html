@@ -1,45 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>InsureCompare - Insurance Buzzz</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Insurance Buzzz</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;color:#333}
-header{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:20px 0}
-.container{max-width:1200px;margin:0 auto;padding:0 20px}.header-content{display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:26px;font-weight:bold}nav a{color:#fff;text-decoration:none;margin-left:20px}
-.hero{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:50px 0;text-align:center}
-.search-box{background:#fff;padding:15px;border-radius:8px;max-width:400px;margin:20px auto}
-.search-box select,.search-box button{width:100%;padding:10px;margin:5px 0}
-.policies-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;padding:40px 0}
-.policy-card{background:#fff;padding:20px;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.1);border:2px solid transparent}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif}
+header{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:18px 0}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+.header-content{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:24px;font-weight:bold}nav a{color:#fff;text-decoration:none;margin-left:15px}
+.hero{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:40px 0;text-align:center}
+.search-box{background:#fff;padding:12px;border-radius:8px;max-width:380px;margin:20px auto}
+.search-box select{width:100%;padding:10px}
+.policies-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;padding:30px 0}
+.policy-card{background:#fff;padding:18px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);border:2px solid transparent}
 .policy-card.selected{border-color:#667eea;background:#f5f3ff}
-.premium{color:#667eea;font-weight:bold;font-size:20px;margin:10px 0}
-.btn{width:100%;padding:10px;background:#667eea;color:#fff;border:none;border-radius:5px;cursor:pointer;margin-top:8px;font-weight:bold}
+.premium{color:#667eea;font-weight:bold;font-size:18px;margin:8px 0}
+.btn{width:100%;padding:10px;background:#667eea;color:#fff;border:none;border-radius:5px;cursor:pointer;margin-top:7px;font-weight:bold}
 .compare-btn{background:#764ba2}.compare-btn.active{background:#27ae60}
-#compare-bar{display:none;position:fixed;bottom:15px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:12px 18px;border-radius:30px;z-index:9999;gap:10px;align-items:center}
-#compare-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:10000;padding:20px;overflow:auto}
-.compare-content{background:#fff;max-width:900px;margin:30px auto;padding:20px;border-radius:10px}
-.compare-table{width:100%;border-collapse:collapse}.compare-table th,.compare-table td{border:1px solid #ddd;padding:10px;text-align:left}
-</style>
-</head>
-<body>
+#compare-bar{display:none;position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:25px;z-index:9999;align-items:center;gap:10px}
+#compare-modal,#quote-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:10000;padding:15px;overflow:auto}
+.compare-content,.quote-content{background:#fff;max-width:850px;margin:30px auto;padding:20px;border-radius:10px}
+.compare-table{width:100%;border-collapse:collapse}.compare-table th,.compare-table td{border:1px solid #ddd;padding:8px}
+.quote-content input,.quote-content textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:5px}
+</style></head><body>
 <header><div class="container"><div class="header-content"><div class="logo">Insurance Buzzz</div><nav><a href="#policies">Browse</a><a href="/admin">Admin</a></nav></div></div></header>
-<section class="hero"><div class="container"><h1>Find Your Perfect Insurance</h1><div class="search-box"><select id="typeFilter"><option value="">All Types</option><option value="Health">Health</option><option value="Motor">Motor</option><option value="Home">Home</option><option value="Travel">Travel</option><option value="Commercial">Commercial</option></select><button onclick="filterPolicies()" style="background:#667eea;color:#fff;border:none;border-radius:5px;">Search</button></div></div></section>
+<section class="hero"><div class="container"><h1>Find Perfect Insurance</h1><div class="search-box"><select id="typeFilter" onchange="filterPolicies()"><option value="">All Types</option><option>Health</option><option>Motor</option><option>Home</option><option>Travel</option><option>Commercial</option></select></div></div></section>
 <div class="container"><div id="policiesContainer" class="policies-grid">Loading...</div></div>
-<div id="compare-bar"><span id="compare-count"></span><button onclick="showCompare()" style="background:#667eea;color:#fff;border:none;padding:6px 14px;border-radius:20px;cursor:pointer;font-weight:bold;">Compare Now</button><button onclick="clearCompare()" style="background:none;border:none;color:#aaa;cursor:pointer;margin-left:8px;">Clear</button></div>
-<div id="compare-modal" onclick="if(event.target==this)this.style.display='none'"><div class="compare-content"><div style="display:flex;justify-content:space-between;"><h2>Compare</h2><button onclick="document.getElementById('compare-modal').style.display='none'" style="border:none;padding:5px 10px;border-radius:50%;">X</button></div><div id="compare-table"></div></div></div>
+<div id="compare-bar"><span id="compare-count"></span><button onclick="showCompare()" style="background:#667eea;color:#fff;border:none;padding:6px 14px;border-radius:15px;cursor:pointer;font-weight:bold;">Compare Now</button><button onclick="clearCompare()" style="background:none;border:none;color:#aaa;cursor:pointer;">Clear</button></div>
+<div id="compare-modal" onclick="if(event.target.id=='compare-modal')this.style.display='none'"><div class="compare-content"><div style="display:flex;justify-content:space-between;"><h2>Comparison</h2><button onclick="document.getElementById('compare-modal').style.display='none'">X</button></div><div id="compare-table" style="margin-top:15px;"></div></div></div>
+<div id="quote-modal" onclick="if(event.target.id=='quote-modal')this.style.display='none'"><div class="quote-content"><h2>Get Quote</h2><p id="quote-policy-name"></p><input id="qname" placeholder="Your Name"><input id="qphone" placeholder="Phone"><input id="qemail" placeholder="Email"><textarea id="qmsg" placeholder="Message"></textarea><button class="btn" onclick="submitQuote()">Submit Quote</button><button class="btn" style="background:#ccc;color:#333;" onclick="document.getElementById('quote-modal').style.display='none'">Cancel</button></div></div>
 <script>
 let allPolicies=[],selectedIds=JSON.parse(localStorage.getItem('compareIds')||'[]');
-async function loadPolicies(){const r=await fetch('/api/policies');allPolicies=await r.json();displayPolicies(allPolicies);updateBar();}
-async function filterPolicies(){const t=document.getElementById('typeFilter').value;const url=t?`/api/search?type=${t}`:'/api/policies';const r=await fetch(url);allPolicies=await r.json();displayPolicies(allPolicies);}
-function displayPolicies(list){const c=document.getElementById('policiesContainer');if(!list.length){c.innerHTML='No policies';return}c.innerHTML=list.map(p=>{const pid=p._id||p.id;const sel=selectedIds.includes(pid);return `<div class="policy-card ${sel?'selected':''}"><h3>${p.name}</h3><div style="color:#764ba2;font-weight:bold;">${p.type}</div><div>Rating: ${p.rating}</div><div class="premium">${p.premium}</div><p>${p.coverage} | ${p.company}</p><ul>${p.features.map(f=>`<li>${f}</li>`).join('')}</ul><button class="btn" onclick="document.getElementById('contact')?.scrollIntoView({behavior:'smooth'})">Get Quote</button><button class="btn compare-btn ${sel?'active':''}" onclick="toggleCompare('${pid}')">${sel?'Selected - Remove':'Compare'}</button></div>`}).join('');}
-function toggleCompare(id){if(selectedIds.includes(id)){selectedIds=selectedIds.filter(x=>x!==id)}else{if(selectedIds.length>=3){alert('Max 3 allowed');return}selectedIds.push(id)}localStorage.setItem('compareIds',JSON.stringify(selectedIds));displayPolicies(allPolicies);updateBar();}
-function updateBar(){const b=document.getElementById('compare-bar');if(selectedIds.length>0){b.style.display='flex';document.getElementById('compare-count').innerText=selectedIds.length+' selected';}else b.style.display='none';}
+let currentQuotePolicy=null;
+async function loadPolicies(){try{const r=await fetch('/api/policies');allPolicies=await r.json();console.log('Loaded',allPolicies.length);displayPolicies(allPolicies);updateBar();}catch(e){document.getElementById('policiesContainer').innerHTML='Error loading: '+e}}
+async function filterPolicies(){const t=document.getElementById('typeFilter').value;const url=t?'/api/search?type='+t:'/api/policies';const r=await fetch(url);allPolicies=await r.json();displayPolicies(allPolicies);}
+function displayPolicies(list){const c=document.getElementById('policiesContainer');if(!list.length){c.innerHTML='No policies found';return}c.innerHTML=list.map(p=>{const pid=(p._id||p.id||'').toString();const sel=selectedIds.includes(pid);return `<div class="policy-card ${sel?'selected':''}"><h3>${p.name}</h3><div style="color:#764ba2;font-weight:bold;">${p.type} - ${p.company}</div><div>Rating: ${p.rating} ⭐</div><div class="premium">${p.premium}</div><div>${p.coverage}</div><ul style="margin:8px 0;padding-left:18px;">${(p.features||[]).map(f=>`<li>${f}</li>`).join('')}</ul><button class="btn" onclick="openQuote('${pid}')">Get Quote</button><button class="btn compare-btn ${sel?'active':''}" onclick="toggleCompare('${pid}')">${sel?'✓ Selected - Remove':'Compare'}</button></div>`}).join('');}
+function toggleCompare(id){id=id.toString();console.log('toggle',id);if(selectedIds.includes(id)){selectedIds=selectedIds.filter(x=>x!==id)}else{if(selectedIds.length>=3){alert('Max 3 compare');return}selectedIds.push(id)}localStorage.setItem('compareIds',JSON.stringify(selectedIds));displayPolicies(allPolicies);updateBar();}
+function updateBar(){const b=document.getElementById('compare-bar');const cc=document.getElementById('compare-count');if(selectedIds.length>0){b.style.display='flex';cc.innerText=selectedIds.length+' selected';}else b.style.display='none';}
 function clearCompare(){selectedIds=[];localStorage.removeItem('compareIds');displayPolicies(allPolicies);updateBar();}
-function showCompare(){if(selectedIds.length<2){alert('Select 2 policies');return}const items=allPolicies.filter(p=>selectedIds.includes(p._id||p.id));let h='<table class="compare-table"><tr><th>Feature</th>'+items.map(p=>`<th>${p.name}</th>`).join('')+'</tr>';[['Type',items.map(p=>p.type)],['Company',items.map(p=>p.company)],['Premium',items.map(p=>p.premium)],['Coverage',items.map(p=>p.coverage)],['Rating',items.map(p=>p.rating)],['Features',items.map(p=>p.features.join(', '))]].forEach(([k,v])=>{h+=`<tr><td><b>${k}</b></td>`+v.map(x=>`<td>${x}</td>`).join('')+'</tr>'});h+='</table>';document.getElementById('compare-table').innerHTML=h;document.getElementById('compare-modal').style.display='block';}
+function showCompare(){if(selectedIds.length<2){alert('Select at least 2');return}const items=allPolicies.filter(p=>selectedIds.includes((p._id||p.id).toString()));console.log('compare items',items);if(!items.length){alert('Policies not found, reloading');loadPolicies();return}let h='<table class="compare-table"><tr><th>Feature</th>'+items.map(p=>`<th>${p.name}</th>`).join('')+'</tr>';const rows=[['Type',items.map(p=>p.type)],['Company',items.map(p=>p.company)],['Premium',items.map(p=>p.premium)],['Coverage',items.map(p=>p.coverage)],['Rating',items.map(p=>p.rating)],['Features',items.map(p=>(p.features||[]).join(', '))]];rows.forEach(r=>{h+=`<tr><td><b>${r[0]}</b></td>`+r[1].map(v=>`<td>${v}</td>`).join('')+'</tr>'});h+='</table>';document.getElementById('compare-table').innerHTML=h;document.getElementById('compare-modal').style.display='block';}
+function openQuote(id){currentQuotePolicy=allPolicies.find(p=>(p._id||p.id).toString()==id);document.getElementById('quote-policy-name').innerText=currentQuotePolicy?currentQuotePolicy.name:'';document.getElementById('quote-modal').style.display='block';}
+async function submitQuote(){const data={policyId:currentQuotePolicy?._id||currentQuotePolicy?.id,policyName:currentQuotePolicy?.name,name:document.getElementById('qname').value,phone:document.getElementById('qphone').value,email:document.getElementById('qemail').value,message:document.getElementById('qmsg').value};if(!data.name||!data.phone){alert('Name & Phone required');return}try{const r=await fetch('/api/quotes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});if(r.ok){alert('Quote submitted! We will call you at 9953558483');document.getElementById('quote-modal').style.display='none';}else{alert('Failed');}}catch(e){alert('Error: '+e)}}
 loadPolicies();
 </script>
-<section id="contact" style="padding:40px;background:#f5f5f5;text-align:center;"><h2>Contact: 9953558483</h2></section>
-</body>
-</html>
+</body></html>
