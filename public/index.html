@@ -154,7 +154,7 @@ function calcPremiumPro(){
  let age=parseInt(document.getElementById('calcAge').value)||30;
  let cover=parseInt(document.getElementById('calcCover').value)||10;
  let type=document.getElementById('calcType').value;
- let base=type=='health'?5000:type=='life'?7000:3000;
+ let base=type=='health'?4500:type=='life'?6500:3500;
  let ageFactor=age>40?1.5:age>30?1.2:1;
  let premium=Math.round(base*cover/5*ageFactor);
  document.getElementById('premiumResult').innerHTML='₹'+premium.toLocaleString('en-IN')+' / year';
