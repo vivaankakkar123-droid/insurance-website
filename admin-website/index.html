@@ -1,19 +1,61 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Admin - Insurance Buzzz</title>
-<style>body{font-family:Arial;background:#f4f4f4;padding:30px}.card{background:#fff;max-width:600px;margin:auto;padding:25px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.1)}input,select,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:6px}button{padding:10px 18px;background:#667eea;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:bold}</style>
-</head><body>
-<div class="card">
+<html>
+<head><title>Admin Panel</title>
+<style>body{font-family:sans-serif;max-width:800px;margin:50px auto;padding:20px}input,button{padding:10px;margin:5px;width:100%}#adminPanel{display:none}</style>
+</head>
+<body>
+<div id="loginBox">
 <h2>Admin Login</h2>
-<div id="loginBox"><input id="adminPass" type="password" placeholder="Admin Password"><button onclick="login()">Login</button></div>
-<div id="adminPanel" style="display:none;">
-<h3>Add Policy</h3><input id="name" placeholder="Policy Name"><input id="company" placeholder="Company"><select id="type"><option>Health</option><option>Motor</option><option>Home</option><option>Travel</option><option>Commercial</option></select><input id="premium" placeholder="Premium e.g. ₹500/month"><input id="coverage" placeholder="Coverage"><input id="rating" placeholder="Rating e.g. 4.5"><textarea id="features" placeholder="Features comma separated"></textarea><button onclick="addPolicy()">Add Policy</button><hr><h3>All Policies</h3><div id="list"></div><hr><h3>Quotes</h3><div id="quotes"></div>
-</div></div>
+<input type="password" id="adminPass" placeholder="Password">
+<button onclick="login()">Login</button>
+<p id="err" style="color:red"></p>
+</div>
+
+<div id="adminPanel">
+<h2>Policy Manager</h2>
+<input id="pname" placeholder="Policy Name">
+<input id="pcompany" placeholder="Company">
+<input id="ptype" placeholder="Type - Health, Life">
+<input id="ppremium" placeholder="Premium">
+<input id="pcoverage" placeholder="Coverage">
+<input id="prating" placeholder="Rating 4.5">
+<input id="pfeatures" placeholder="Features comma separated">
+<button onclick="addPolicy()">Add Policy</button>
+<hr>
+<div id="list"></div>
+<hr>
+<h3>Quotes</h3>
+<div id="quotes"></div>
+</div>
+
 <script>
-const API = localStorage.getItem('api_url') || 'https://insurance-website-1-6a9d.onrender.com'; // change this to your backend URL
-let token = localStorage.getItem('adminToken')||'';
-async function login(){const p=document.getElementById('adminPass').value;const r=await fetch(API+'/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:p})});const d=await r.json();if(d.token){token=d.token;localStorage.setItem('adminToken',token);document.getElementById('loginBox').style.display='none';document.getElementById('adminPanel').style.display='block';loadAll();}else alert('Wrong password');}
-async function loadAll(){const r=await fetch(API+'/api/policies');const data=await r.json();document.getElementById('list').innerHTML=data.map(p=>`${p.name} - ${p.company} <button onclick="delPolicy('${p._id}')">Delete</button><br>`).join('');const q=await fetch(API+'/api/quotes',{headers:{'Authorization':token}});const qd=await q.json();document.getElementById('quotes').innerHTML=qd.map(q=>`${q.name} - ${q.phone} - ${q.policyName}<br>`).join('');}
-async function addPolicy(){const body={name:document.getElementById('name').value,company:document.getElementById('company').value,type:document.getElementById('type').value,premium:document.getElementById('premium').value,coverage:document.getElementById('coverage').value,rating:document.getElementById('rating').value,features:document.getElementById('features').value.split(',')};await fetch(API+'/api/policies',{method:'POST',headers:{'Content-Type':'application/json','Authorization':token},body:JSON.stringify(body)});alert('Added');loadAll();}
-async function delPolicy(id){await fetch(API+'/api/policies/'+id,{method:'DELETE',headers:{'Authorization':token}});loadAll();}
-if(token){document.getElementById('loginBox').style.display='none';document.getElementById('adminPanel').style.display='block';loadAll();}
-</script></body></html>
+const API='https://insurance-website-1-6a9d.onrender.com';
+const ADMIN_PASS='admin123';
+
+function login(){
+ const p=document.getElementById('adminPass').value;
+ if(p===ADMIN_PASS){
+  document.getElementById('loginBox').style.display='none';
+  document.getElementById('adminPanel').style.display='block';
+  loadAll();
+ } else {
+  document.getElementById('err').innerText='Wrong password, try admin123';
+ }
+}
+async function loadAll(){
+ try{
+  let r=await fetch(API+'/api/policies'); let d=await r.json();
+  document.getElementById('list').innerHTML=d.map(x=>`<div>${x.name} - ${x.company} <button onclick="delPolicy('${x._id}')">Delete</button></div>`).join('');
+  let q=await fetch(API+'/api/quotes'); let qd=await q.json();
+  document.getElementById('quotes').innerHTML=qd.map(x=>`<div>${x.name} ${x.phone} ${x.email}</div>`).join('');
+ }catch(e){document.getElementById('list').innerHTML='Backend waking up... 30 sec wait';}
+}
+async function addPolicy(){
+ const body={name:pname.value,company:pcompany.value,type:ptype.value,premium:ppremium.value,coverage:pcoverage.value,rating:prating.value,features:pfeatures.value.split(',')};
+ await fetch(API+'/api/policies',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+ alert('Added'); loadAll();
+}
+async function delPolicy(id){await fetch(API+'/api/policies/'+id,{method:'DELETE'}); loadAll();}
+</script>
+</body>
+</html>
