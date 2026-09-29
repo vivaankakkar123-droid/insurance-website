@@ -22,6 +22,19 @@ header{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:18p
 </style></head><body>
 <header><div class="container"><div class="header-content"><div class="logo">Insurance Buzzz</div><nav><a href="#policies">Browse Policies</a><a href="/admin">Admin</a></nav></div></div></header>
 <section class="hero"><div class="container"><h1>Find Your Perfect Insurance</h1><p>Compare policies from top companies</p><div class="search-box"><select id="typeFilter"><option value="">All Types</option><option value="Health">Health Insurance</option><option value="Motor">Motor Insurance</option><option value="Home">Home Insurance</option><option value="Travel">Travel Insurance</option><option value="Commercial">Commercial</option></select><button onclick="filterPolicies()">Search</button></div></div></section>
+
+<section id="premium-calculator" style="background:#fff;padding:30px 20px;margin:30px auto;max-width:900px;border-radius:12px;box-shadow:0 2px 15px rgba(0,0,0,.08);">
+<h2 style="text-align:center;color:#667eea;margin-bottom:20px;">💰 Premium Calculator</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+<div><label>Type</label><select id="calcType" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin-top:5px;"><option value="Health">Health</option><option value="Motor">Motor</option><option value="Home">Home</option><option value="Travel">Travel</option></select></div>
+<div><label>Age</label><input id="calcAge" type="number" value="30" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin-top:5px;"></div>
+<div><label>Coverage Amount (₹)</label><input id="calcCoverage" type="number" value="500000" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin-top:5px;"></div>
+<div><label>Tenure (Years)</label><select id="calcTenure" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin-top:5px;"><option value="1">1 Year</option><option value="2">2 Years</option><option value="5">5 Years</option></select></div>
+</div>
+<button onclick="calculatePremium()" style="width:100%;margin-top:20px;padding:12px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:16px;">Calculate Premium</button>
+<div id="calcResult" style="display:none;margin-top:20px;padding:20px;background:#f5f3ff;border-radius:8px;text-align:center;"></div>
+</section>
+
 <div class="container"><div id="policiesContainer" class="policies-grid">Loading policies...</div></div>
 <div id="compare-bar"><span id="compare-count"></span><button onclick="showCompare()" style="background:#667eea;color:#fff;border:none;padding:6px 14px;border-radius:20px;cursor:pointer;font-weight:bold;">Compare Now</button><button onclick="clearCompare()" style="background:none;border:none;color:#aaa;cursor:pointer;margin-left:8px;">✕</button></div>
 <div id="compare-modal" onclick="if(event.target.id=='compare-modal')this.style.display='none'"><div class="modal-box"><div style="display:flex;justify-content:space-between;align-items:center;"><h2>Compare Policies</h2><button onclick="document.getElementById('compare-modal').style.display='none'" style="border:none;padding:6px 12px;border-radius:50%;cursor:pointer;">✕</button></div><div id="compare-table" style="margin-top:15px;"></div></div></div>
@@ -38,5 +51,25 @@ function showCompare(){if(selectedIds.length<2){alert('Please select at least 2 
 function openQuote(id){currentQuote=masterPolicies.find(p=>(p._id||p.id).toString()==id);document.getElementById('quote-policy-name').innerText=currentQuote?currentQuote.name:'';document.getElementById('quote-modal').style.display='block';}
 async function submitQuote(){const name=document.getElementById('qname').value;const phone=document.getElementById('qphone').value;if(!name||!phone){alert('Name and Phone required');return;}const data={policyId:currentQuote?._id||currentQuote?.id,policyName:currentQuote?.name,name,email:document.getElementById('qemail').value,phone,message:document.getElementById('qmsg').value};const r=await fetch('/api/quotes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});if(r.ok){alert('Quote submitted! We will contact you at 9953558483');document.getElementById('quote-modal').style.display='none';}else alert('Failed');}
 loadPolicies();
+
+function calculatePremium(){
+  const type=document.getElementById('calcType').value;
+  const age=parseInt(document.getElementById('calcAge').value)||30;
+  const coverage=parseInt(document.getElementById('calcCoverage').value)||500000;
+  const tenure=parseInt(document.getElementById('calcTenure').value)||1;
+  let base=0;
+  if(type=='Health') base=coverage*0.03;
+  if(type=='Motor') base=coverage*0.04;
+  if(type=='Home') base=coverage*0.01;
+  if(type=='Travel') base=coverage*0.02;
+  if(type=='Commercial') base=coverage*0.035;
+  let ageFactor=1; if(age>40) ageFactor=1.2; if(age>50) ageFactor=1.5; if(age>60) ageFactor=2;
+  let premium=Math.round((base*ageFactor*tenure)/12);
+  let yearly=Math.round(base*ageFactor*tenure);
+  document.getElementById('calcResult').style.display='block';
+  document.getElementById('calcResult').innerHTML=`<h3 style="color:#667eea;">Estimated Premium</h3><div style="font-size:32px;font-weight:800;margin:10px 0;">₹${yearly.toLocaleString('en-IN')}/year</div><div style="color:#666;">₹${premium.toLocaleString('en-IN')}/month</div><p style="margin-top:10px;font-size:13px;color:#888;">For ${type} Insurance | Age ${age} | Coverage ₹${coverage.toLocaleString('en-IN')}</p><button onclick="document.getElementById('quote-modal').style.display='block'" style="margin-top:12px;padding:10px 20px;background:#27ae60;color:#fff;border:none;border-radius:20px;cursor:pointer;font-weight:bold;">Get This Quote - 9953558483</button>`;
+  document.getElementById('calcResult').scrollIntoView({behavior:'smooth'});
+}
+
 </script>
 </body></html>
