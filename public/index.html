@@ -127,24 +127,40 @@ function calculateEMI(){
 <a href="https://wa.me/919953558483?text=Hi Insurance Buzzz" target="_blank" style="position:fixed;bottom:20px;right:20px;background:#25D366;color:#fff;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 4px 10px rgba(0,0,0,0.3);z-index:9999;text-decoration:none;">💬</a>
 
 
-<!-- PREMIUM PRO START -->
+
+
+
+<!-- PREMIUM STATEWISE -->
 <section style="background:#fff;padding:40px 20px;">
 <div style="max-width:900px;margin:auto;">
-<h2 style="text-align:center;">💰 Smart Premium Calculator - Insurance Buzzz</h2>
+<h2 style="text-align:center;">💰 State-Wise Premium Calculator</h2>
+<p style="text-align:center;color:#666;">Delhi, UP, Haryana sab ka alag premium</p>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;background:#f8f9ff;padding:25px;border-radius:15px;margin-top:20px;">
 <div>
 <label>Age</label><input id="calcAge" type="number" value="30" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ddd;">
 <label>Cover (Lakhs)</label><input id="calcCover" type="number" value="10" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ddd;">
+<label>State</label>
+<select id="calcState" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ddd;">
+<option value="delhi">Delhi - Base Price</option>
+<option value="up">UP - 10% Less</option>
+<option value="haryana">Haryana - 5% Less</option>
+<option value="punjab">Punjab - 8% Less</option>
+<option value="rajasthan">Rajasthan - 12% Less</option>
+<option value="mumbai">Mumbai - 15% High</option>
+<option value="bangalore">Bangalore - 10% High</option>
+</select>
 <label>Type</label>
 <select id="calcType" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ddd;">
-<option value="health">Health</option><option value="life">Term Life</option><option value="car">Car</option>
+<option value="health">Health Insurance</option>
+<option value="life">Term Life</option>
+<option value="car">Car Insurance</option>
 </select>
-<button onclick="calcPremiumPro()" style="width:100%;padding:12px;background:#667eea;color:#fff;border:none;border-radius:8px;font-weight:bold;margin-top:10px;cursor:pointer;">Calculate</button>
+<button onclick="calcPremiumPro()" style="width:100%;padding:12px;background:#667eea;color:#fff;border:none;border-radius:8px;font-weight:bold;margin-top:10px;cursor:pointer;">Calculate State-Wise Premium</button>
 </div>
 <div style="background:#fff;padding:20px;border-radius:10px;text-align:center;">
-<h3 id="premiumResult" style="color:#667eea;font-size:28px;">₹0</h3>
-<p id="premiumBreakup" style="color:#666;font-size:14px;"></p>
-<a href="https://wa.me/919953558483" style="display:inline-block;margin-top:15px;background:#25D366;color:#fff;padding:10px 20px;border-radius:20px;text-decoration:none;">WhatsApp</a>
+<h3 id="premiumResult" style="color:#667eea;font-size:26px;">₹0 / year</h3>
+<p id="premiumBreakup" style="color:#666;font-size:13px;margin-top:10px;line-height:1.6;"></p>
+<a id="waLink" href="https://wa.me/919953558483" target="_blank" style="display:inline-block;margin-top:15px;background:#25D366;color:#fff;padding:10px 20px;border-radius:20px;text-decoration:none;">Get This Price on WhatsApp</a>
 </div>
 </div>
 </div>
@@ -154,15 +170,18 @@ function calcPremiumPro(){
  let age=parseInt(document.getElementById('calcAge').value)||30;
  let cover=parseInt(document.getElementById('calcCover').value)||10;
  let type=document.getElementById('calcType').value;
- let base=type=='health'?4500:type=='life'?6500:3500;
- let ageFactor=age>40?1.5:age>30?1.2:1;
- let premium=Math.round(base*cover/5*ageFactor);
+ let state=document.getElementById('calcState').value;
+ let base=type=='health'?5000:type=='life'?7000:3000;
+ let ageFactor=age>45?1.6:age>35?1.3:1;
+ let stateFactor={delhi:1,up:0.9,haryana:0.95,punjab:0.92,rajasthan:0.88,mumbai:1.15,bangalore:1.10}[state]||1;
+ let premium=Math.round(base*cover/5*ageFactor*stateFactor);
  document.getElementById('premiumResult').innerHTML='₹'+premium.toLocaleString('en-IN')+' / year';
- document.getElementById('premiumBreakup').innerHTML=type.toUpperCase()+' | Age '+age+' | Cover '+cover+'L<br>Best Price by Insurance Buzzz';
+ document.getElementById('premiumBreakup').innerHTML=type.toUpperCase()+' | Age '+age+'<br>Cover ₹'+cover+'L | State: '+state.toUpperCase()+'<br>Factor: '+(stateFactor*100).toFixed(0)+'%<br><b style=color:green>✓ Insurance Buzzz Best Deal</b>';
+ document.getElementById('waLink').href='https://wa.me/919953558483?text=Hi Insurance Buzzz, Mujhe '+type+' chahiye Age '+age+' Cover '+cover+'L State '+state+' Premium ₹'+premium;
 }
 calcPremiumPro();
 </script>
-<!-- PREMIUM PRO END -->
+<!-- END STATEWISE -->
 
 <footer style="background:#1a1a2e;color:#fff;padding:30px 20px;text-align:center;margin-top:40px;">
 <p style="font-size:20px;font-weight:bold;">Insurance Buzzz</p>
