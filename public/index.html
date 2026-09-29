@@ -21,153 +21,7 @@ header{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:18p
 .compare-table{width:100%;border-collapse:collapse}.compare-table th,.compare-table td{border:1px solid #ddd;padding:10px;text-align:left}
 </style></head><body>
 <header><div class="container"><div class="header-content"><div class="logo">Insurance Buzzz</div><nav><a href="#policies">Browse Policies</a></nav></div></div></header>
-<section class="hero"><div class="container"><h1>Find Your Perfect Insurance</h1><p>Compare policies from top companies</p><div class="search-box"><select id="typeFilter"><option value="">All Types</option><option value="Health">Health Insurance</option><option value="Motor">Motor Insurance</option><option value="Home">Home Insurance</option><option value="Travel">Travel Insurance</option><option value="Commercial">Commercial</option></select><button onclick="filterPolicies()">Search</button></div></div></section>
 
-<!-- BMI Calculator -->
-<section style="background:#f8f9ff;padding:40px 20px;text-align:center;">
-<div class="container">
-<h2 style="color:#333;">🧮 Free BMI Calculator</h2>
-<p style="color:#666;margin-bottom:20px;">Check your health score for better Health Insurance premium</p>
-<div style="max-width:400px;margin:0 auto;background:#fff;padding:25px;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);">
-<input id="bmiHeight" type="number" placeholder="Height (cm) e.g. 170" style="width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px;">
-<input id="bmiWeight" type="number" placeholder="Weight (kg) e.g. 70" style="width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px;">
-<button onclick="calculateBMI()" style="width:100%;padding:12px;background:#667eea;color:#fff;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px;">Calculate BMI</button>
-<div id="bmiResult" style="margin-top:15px;font-weight:bold;"></div>
-</div>
-</div>
-</section>
-
-<script>
-function calculateBMI(){
- let h = document.getElementById('bmiHeight').value/100;
- let w = document.getElementById('bmiWeight').value;
- if(!h || !w){ alert('Height Weight daal'); return; }
- let bmi = (w/(h*h)).toFixed(1);
- let status = bmi<18.5?'Underweight': bmi<25?'Normal - Best for Insurance!': bmi<30?'Overweight':'Obese';
- let color = bmi<25?'#27ae60':'#e74c3c';
- document.getElementById('bmiResult').innerHTML = `<span style="font-size:24px;color:${color};">BMI: ${bmi}</span><br><span style="color:${color};">${status}</span><br><small style="color:#888;">Normal BMI = Lower Health Insurance Premium</small>`;
-}
-</script>
-
-<section id="premium-calculator" style="background:#fff;padding:30px 20px;margin:30px auto;max-width:900px;border-radius:12px;box-shadow:0 2px 15px rgba(0,0,0,.08);">
-<h2 style="text-align:center;color:#667eea;margin-bottom:20px;">💰 Premium Calculator</h2>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
-<div><label>Type</label><select id="calcType" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin-top:5px;"><option value="Health">Health</option><option value="Motor">Motor</option><option value="Home">Home</option><option value="Travel">Travel</option></select></div>
-<div><label>Age</label><input id="calcAge" type="number" value="30" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin-top:5px;"></div>
-<div><label>Coverage Amount (₹)</label><input id="calcCoverage" type="number" value="500000" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin-top:5px;"></div>
-<div><label>Tenure (Years)</label><select id="calcTenure" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin-top:5px;"><option value="1">1 Year</option><option value="2">2 Years</option><option value="5">5 Years</option></select></div>
-</div>
-<button onclick="calculatePremium()" style="width:100%;margin-top:20px;padding:12px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:16px;">Calculate Premium</button>
-<div id="calcResult" style="display:none;margin-top:20px;padding:20px;background:#f5f3ff;border-radius:8px;text-align:center;"></div>
-</section>
-
-<div class="container"><div 
-<div id="emi-calculator" style="background:#fff;padding:25px 20px;margin:20px auto;max-width:900px;border-radius:12px;box-shadow:0 2px 15px rgba(0,0,0,.08);">
-<h2 style="text-align:center;color:#764ba2;margin-bottom:20px;">📊 EMI Calculator</h2>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;">
-<div><label>Total Premium (₹)</label><input id="emiPrincipal" type="number" value="50000" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin-top:5px;"></div>
-<div><label>Interest %</label><input id="emiInterest" type="number" value="12" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin-top:5px;"></div>
-<div><label>Months</label><select id="emiMonths" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin-top:5px;"><option value="6">6 Months</option><option value="12" selected>12 Months</option><option value="18">18 Months</option><option value="24">24 Months</option></select></div>
-</div>
-<button onclick="calculateEMI()" style="width:100%;margin-top:20px;padding:12px;background:linear-gradient(135deg,#764ba2,#667eea);color:#fff;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:16px;">Calculate EMI</button>
-<div id="emiResult" style="display:none;margin-top:20px;padding:20px;background:#fff3e0;border-radius:8px;text-align:center;"></div>
-</div>
-
-<div id="policiesContainer" class="policies-grid">Loading policies...</div></div>
-<div id="compare-bar"><span id="compare-count"></span><button onclick="showCompare()" style="background:#667eea;color:#fff;border:none;padding:6px 14px;border-radius:20px;cursor:pointer;font-weight:bold;">Compare Now</button><button onclick="clearCompare()" style="background:none;border:none;color:#aaa;cursor:pointer;margin-left:8px;">✕</button></div>
-<div id="compare-modal" onclick="if(event.target.id=='compare-modal')this.style.display='none'"><div class="modal-box"><div style="display:flex;justify-content:space-between;align-items:center;"><h2>Compare Policies</h2><button onclick="document.getElementById('compare-modal').style.display='none'" style="border:none;padding:6px 12px;border-radius:50%;cursor:pointer;">✕</button></div><div id="compare-table" style="margin-top:15px;"></div></div></div>
-<div id="quote-modal" onclick="if(event.target.id=='quote-modal')this.style.display='none'"><div class="modal-box" style="max-width:450px;"><h2>Get Quote</h2><p id="quote-policy-name" style="color:#667eea;font-weight:bold;margin:8px 0;"></p><input id="qname" placeholder="Your Name *" style="width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:5px;"><input id="qphone" placeholder="Phone *" style="width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:5px;"><input id="qemail" placeholder="Email" style="width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:5px;"><textarea id="qmsg" placeholder="Message" style="width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:5px;"></textarea><button class="btn btn-primary" onclick="submitQuote()">Submit Quote</button><button class="btn" style="background:#eee;" onclick="document.getElementById('quote-modal').style.display='none'">Cancel</button></div></div>
-<script>
-let masterPolicies=[],allPolicies=[],selectedIds=JSON.parse(localStorage.getItem('compareIds')||'[]');let currentQuote=null;
-async function loadPolicies(){const r=await fetch('/api/policies');masterPolicies=await r.json();allPolicies=[...masterPolicies];displayPolicies(allPolicies);updateBar();}
-async function filterPolicies(){const t=document.getElementById('typeFilter').value;if(!t){allPolicies=[...masterPolicies];}else{const r=await fetch('/api/search?type='+t);allPolicies=await r.json();}displayPolicies(allPolicies);}
-function displayPolicies(list){const c=document.getElementById('policiesContainer');if(!list.length){c.innerHTML='<p>No policies found</p>';return;}c.innerHTML=list.map(p=>{const pid=(p._id||p.id).toString();const sel=selectedIds.includes(pid);return `<div class="policy-card ${sel?'selected':''}"><h3>${p.name}</h3><div style="color:#764ba2;font-weight:bold;font-size:13px;">${p.type} • ${p.company}</div><div style="margin:4px 0;">Rating: ${p.rating} ⭐</div><div class="premium">${p.premium}</div><p style="font-size:13px;color:#666;">${p.coverage}</p><ul style="margin:8px 0 0 18px;font-size:13px;">${(p.features||[]).slice(0,4).map(f=>`<li>${f}</li>`).join('')}</ul><button class="btn btn-primary" onclick="openQuote('${pid}')">Get Quote</button><button class="btn btn-compare ${sel?'active':''}" onclick="toggleCompare('${pid}')">${sel?'✓ Selected - Click to Remove':'＋ Add to Compare'}</button></div>`}).join('');}
-function toggleCompare(id){id=id.toString();if(selectedIds.includes(id)){selectedIds=selectedIds.filter(x=>x!==id);}else{if(selectedIds.length>=3){alert('Max 3 policies can be compared');return;}selectedIds.push(id);}localStorage.setItem('compareIds',JSON.stringify(selectedIds));displayPolicies(allPolicies);updateBar();}
-function updateBar(){const b=document.getElementById('compare-bar');const cnt=document.getElementById('compare-count');if(selectedIds.length>0){b.style.display='flex';cnt.innerText=selectedIds.length+' selected';}else b.style.display='none';}
-function clearCompare(){selectedIds=[];localStorage.removeItem('compareIds');displayPolicies(allPolicies);updateBar();}
-function showCompare(){if(selectedIds.length<2){alert('Please select at least 2 policies');return;}const items=masterPolicies.filter(p=>selectedIds.includes((p._id||p.id).toString()));if(!items.length){alert('Please reload page');return;}let h='<table class="compare-table"><tr><th>Feature</th>'+items.map(p=>`<th>${p.name}</th>`).join('')+'</tr>';const rows=[['Type',items.map(i=>i.type)],['Company',items.map(i=>i.company)],['Premium',items.map(i=>i.premium)],['Coverage',items.map(i=>i.coverage)],['Rating',items.map(i=>i.rating)],['Features',items.map(i=>(i.features||[]).join(', '))]];rows.forEach(r=>{h+=`<tr><td><b>${r[0]}</b></td>`+r[1].map(v=>`<td>${v}</td>`).join('')+'</tr>'});h+='</table>';document.getElementById('compare-table').innerHTML=h;document.getElementById('compare-modal').style.display='block';}
-function openQuote(id){currentQuote=masterPolicies.find(p=>(p._id||p.id).toString()==id);document.getElementById('quote-policy-name').innerText=currentQuote?currentQuote.name:'';document.getElementById('quote-modal').style.display='block';}
-async function submitQuote(){const name=document.getElementById('qname').value;const phone=document.getElementById('qphone').value;if(!name||!phone){alert('Name and Phone required');return;}const data={policyId:currentQuote?._id||currentQuote?.id,policyName:currentQuote?.name,name,email:document.getElementById('qemail').value,phone,message:document.getElementById('qmsg').value};const r=await fetch('/api/quotes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});if(r.ok){alert('Quote submitted! We will contact you at 9953558483');document.getElementById('quote-modal').style.display='none';}else alert('Failed');}
-loadPolicies();
-
-function calculatePremium(){
-  const type=document.getElementById('calcType').value;
-  const age=parseInt(document.getElementById('calcAge').value)||30;
-  const coverage=parseInt(document.getElementById('calcCoverage').value)||500000;
-  const tenure=parseInt(document.getElementById('calcTenure').value)||1;
-  let base=0;
-  if(type=='Health') base=coverage*0.03;
-  if(type=='Motor') base=coverage*0.04;
-  if(type=='Home') base=coverage*0.01;
-  if(type=='Travel') base=coverage*0.02;
-  if(type=='Commercial') base=coverage*0.035;
-  let ageFactor=1; if(age>40) ageFactor=1.2; if(age>50) ageFactor=1.5; if(age>60) ageFactor=2;
-  let premium=Math.round((base*ageFactor*tenure)/12);
-  let yearly=Math.round(base*ageFactor*tenure);
-  document.getElementById('calcResult').style.display='block';
-  document.getElementById('calcResult').innerHTML=`<h3 style="color:#667eea;">Estimated Premium</h3><div style="font-size:32px;font-weight:800;margin:10px 0;">₹${yearly.toLocaleString('en-IN')}/year</div><div style="color:#666;">₹${premium.toLocaleString('en-IN')}/month</div><p style="margin-top:10px;font-size:13px;color:#888;">For ${type} Insurance | Age ${age} | Coverage ₹${coverage.toLocaleString('en-IN')}</p><button onclick="document.getElementById('quote-modal').style.display='block'" style="margin-top:12px;padding:10px 20px;background:#27ae60;color:#fff;border:none;border-radius:20px;cursor:pointer;font-weight:bold;">Get This Quote - 9953558483</button>`;
-  document.getElementById('calcResult').scrollIntoView({behavior:'smooth'});
-}
-
-
-function calculateEMI(){
-  const P=parseFloat(document.getElementById('emiPrincipal').value)||0;
-  const annual=parseFloat(document.getElementById('emiInterest').value)||12;
-  const n=parseInt(document.getElementById('emiMonths').value)||12;
-  const r=annual/12/100;
-  const emi = r==0 ? P/n : (P*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
-  const total=emi*n;
-  const interest=total-P;
-  document.getElementById('emiResult').style.display='block';
-  document.getElementById('emiResult').innerHTML=`<h3 style="color:#e67e22;">EMI Breakdown</h3><div style="font-size:28px;font-weight:800;margin:10px 0;">₹${Math.round(emi).toLocaleString('en-IN')}/month</div><div style="display:flex;justify-content:center;gap:20px;margin-top:10px;font-size:14px;"><span>Total: ₹${Math.round(total).toLocaleString('en-IN')}</span><span style="color:#e74c3c;">Interest: ₹${Math.round(interest).toLocaleString('en-IN')}</span></div><p style="margin-top:8px;font-size:12px;color:#888;">${n} months @ ${annual}% p.a.</p>`;
-}
-
-</script>
-
-<a href="https://wa.me/919953558483?text=Hi Insurance Buzzz" target="_blank" style="position:fixed;bottom:20px;right:20px;background:#25D366;color:#fff;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 4px 10px rgba(0,0,0,0.3);z-index:9999;text-decoration:none;">💬</a>
-
-
-
-
-
-
-
-
-<!-- PREMIUM STATEWISE -->
-<section style="background:#fff;padding:40px 20px;">
-<div style="max-width:900px;margin:auto;">
-<h2 style="text-align:center;">💰 State-Wise Premium Calculator</h2>
-<p style="text-align:center;color:#666;">Delhi, UP, Haryana sab ka alag premium</p>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;background:#f8f9ff;padding:25px;border-radius:15px;margin-top:20px;">
-<div>
-<label>Age</label><input id="calcAge" type="number" value="30" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ddd;">
-<label>Cover (Lakhs)</label><input id="calcCover" type="number" value="10" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ddd;">
-<label>State</label>
-<select id="calcState" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ddd;">
-<option value="delhi">Delhi - Base Price</option>
-<option value="up">UP - 10% Less</option>
-<option value="haryana">Haryana - 5% Less</option>
-<option value="punjab">Punjab - 8% Less</option>
-<option value="rajasthan">Rajasthan - 12% Less</option>
-<option value="mumbai">Mumbai - 15% High</option>
-<option value="bangalore">Bangalore - 10% High</option>
-</select>
-<label>Type</label>
-<select id="calcType" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ddd;">
-<option value="health">Health Insurance</option>
-<option value="life">Term Life</option>
-<option value="car">Car Insurance</option>
-</select>
-<button onclick="calcPremiumPro()" style="width:100%;padding:12px;background:#667eea;color:#fff;border:none;border-radius:8px;font-weight:bold;margin-top:10px;cursor:pointer;">Calculate State-Wise Premium</button>
-</div>
-<div style="background:#fff;padding:20px;border-radius:10px;text-align:center;">
-<h3 id="premiumResult" style="color:#667eea;font-size:26px;">₹0 / year</h3>
-<p id="premiumBreakup" style="color:#666;font-size:13px;margin-top:10px;line-height:1.6;"></p>
-<a id="waLink" href="https://wa.me/919953558483" target="_blank" style="display:inline-block;margin-top:15px;background:#25D366;color:#fff;padding:10px 20px;border-radius:20px;text-decoration:none;">Get This Price on WhatsApp</a>
-</div>
-</div>
-</div>
-</section>
 <script>
 function calcPremiumPro(){
  let age=parseInt(document.getElementById('calcAge').value)||30;
@@ -185,6 +39,49 @@ function calcPremiumPro(){
 calcPremiumPro();
 </script>
 <!-- END STATEWISE -->
+
+
+<section style="background:#fff;padding:40px 20px;" id="premium-calc-final">
+<div style="max-width:900px;margin:auto;">
+<h2 style="text-align:center;">💰 State-Wise Premium Calculator - Insurance Buzzz</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;background:#f8f9ff;padding:25px;border-radius:15px;margin-top:20px;">
+<div>
+<label>Age</label><input id="calcAge" type="number" value="30" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ddd;">
+<label>Cover (Lakhs)</label><input id="calcCover" type="number" value="10" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ddd;">
+<label>State</label>
+<select id="calcState" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ddd;">
+<option value="delhi">Delhi</option><option value="up">UP</option><option value="haryana">Haryana</option><option value="punjab">Punjab</option><option value="rajasthan">Rajasthan</option><option value="mumbai">Mumbai</option><option value="bangalore">Bangalore</option>
+</select>
+<label>Type</label>
+<select id="calcType" style="width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ddd;">
+<option value="health">Health</option><option value="life">Term Life</option><option value="car">Car</option>
+</select>
+<button onclick="calcPremiumPro()" style="width:100%;padding:12px;background:#667eea;color:#fff;border:none;border-radius:8px;font-weight:bold;margin-top:10px;cursor:pointer;">Calculate</button>
+</div>
+<div style="background:#fff;padding:20px;border-radius:10px;text-align:center;">
+<h3 id="premiumResult" style="color:#667eea;font-size:26px;">₹0</h3>
+<p id="premiumBreakup"></p>
+<a id="waLink" href="https://wa.me/919953558483" target="_blank" style="display:inline-block;margin-top:15px;background:#25D366;color:#fff;padding:10px 20px;border-radius:20px;text-decoration:none;">WhatsApp</a>
+</div>
+</div>
+</div>
+</section>
+<script>
+function calcPremiumPro(){
+ let age=parseInt(document.getElementById('calcAge').value)||30;
+ let cover=parseInt(document.getElementById('calcCover').value)||10;
+ let type=document.getElementById('calcType').value;
+ let state=document.getElementById('calcState').value;
+ let base=type=='health'?5000:type=='life'?7000:3000;
+ let ageFactor=age>45?1.6:age>35?1.3:1;
+ let stateFactor={delhi:1,up:0.9,haryana:0.95,punjab:0.92,rajasthan:0.88,mumbai:1.15,bangalore:1.10}[state]||1;
+ let premium=Math.round(base*cover/5*ageFactor*stateFactor);
+ document.getElementById('premiumResult').innerHTML='₹'+premium.toLocaleString('en-IN')+' / year';
+ document.getElementById('premiumBreakup').innerHTML=type.toUpperCase()+' | Age '+age+'<br>Cover '+cover+'L | '+state.toUpperCase()+'<br><b style=color:green>✓ Best Deal</b>';
+ document.getElementById('waLink').href='https://wa.me/919953558483?text=Hi, '+type+' Age '+age+' Cover '+cover+'L State '+state+' Premium '+premium;
+}
+calcPremiumPro();
+</script>
 
 <footer style="background:#1a1a2e;color:#fff;padding:30px 20px;text-align:center;margin-top:40px;">
 <p style="font-size:20px;font-weight:bold;">Insurance Buzzz</p>
