@@ -23,6 +23,32 @@ header{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:18p
 <header><div class="container"><div class="header-content"><div class="logo">Insurance Buzzz</div><nav><a href="#policies">Browse Policies</a></nav></div></div></header>
 <section class="hero"><div class="container"><h1>Find Your Perfect Insurance</h1><p>Compare policies from top companies</p><div class="search-box"><select id="typeFilter"><option value="">All Types</option><option value="Health">Health Insurance</option><option value="Motor">Motor Insurance</option><option value="Home">Home Insurance</option><option value="Travel">Travel Insurance</option><option value="Commercial">Commercial</option></select><button onclick="filterPolicies()">Search</button></div></div></section>
 
+<!-- BMI Calculator -->
+<section style="background:#f8f9ff;padding:40px 20px;text-align:center;">
+<div class="container">
+<h2 style="color:#333;">🧮 Free BMI Calculator</h2>
+<p style="color:#666;margin-bottom:20px;">Check your health score for better Health Insurance premium</p>
+<div style="max-width:400px;margin:0 auto;background:#fff;padding:25px;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+<input id="bmiHeight" type="number" placeholder="Height (cm) e.g. 170" style="width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px;">
+<input id="bmiWeight" type="number" placeholder="Weight (kg) e.g. 70" style="width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px;">
+<button onclick="calculateBMI()" style="width:100%;padding:12px;background:#667eea;color:#fff;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px;">Calculate BMI</button>
+<div id="bmiResult" style="margin-top:15px;font-weight:bold;"></div>
+</div>
+</div>
+</section>
+
+<script>
+function calculateBMI(){
+ let h = document.getElementById('bmiHeight').value/100;
+ let w = document.getElementById('bmiWeight').value;
+ if(!h || !w){ alert('Height Weight daal'); return; }
+ let bmi = (w/(h*h)).toFixed(1);
+ let status = bmi<18.5?'Underweight': bmi<25?'Normal - Best for Insurance!': bmi<30?'Overweight':'Obese';
+ let color = bmi<25?'#27ae60':'#e74c3c';
+ document.getElementById('bmiResult').innerHTML = `<span style="font-size:24px;color:${color};">BMI: ${bmi}</span><br><span style="color:${color};">${status}</span><br><small style="color:#888;">Normal BMI = Lower Health Insurance Premium</small>`;
+}
+</script>
+
 <section id="premium-calculator" style="background:#fff;padding:30px 20px;margin:30px auto;max-width:900px;border-radius:12px;box-shadow:0 2px 15px rgba(0,0,0,.08);">
 <h2 style="text-align:center;color:#667eea;margin-bottom:20px;">💰 Premium Calculator</h2>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
